@@ -32,13 +32,41 @@ jobs:
         cache: 'npm'
     - name: Install program dependencies
       run: npm install
-    - name: Start the app
-      run: npm run start &  #executed as background process
+   # - name: Start the app
+    #  run: npm run start &  #executed as background process
     - name: Run integration tests
       run: npm test | tee test-output.log
 
-    - name: Upload test output as artifact
-      uses: actions/upload-artifact@v4
+   # - name: Upload test output as artifact
+    #  uses: actions/upload-artifact@v4
+    #  with:
+     #   name: test-results #-${{ matrix.node-version }}
+     #   path: test-output.log 
+
+
+  security_tests:
+
+    runs-on: ubuntu-latest
+
+   # strategy:
+   #   matrix:
+      #  node-version: [18.x, 20.x, 22.x]
+        #run the build_test job with three different versions of Node.js (18.x, 20.x, and 22.x) This means the job will be executed three times, once for each version specified in the matrix.
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - name: Clone the GitHub repository on the runner
+      uses: actions/checkout@v4
+    - name: Use Node.js  20 #${{ matrix.node-version }}
+      uses: actions/setup-node@v4
       with:
-        name: test-results #-${{ matrix.node-version }}
-        path: test-output.log 
+        node-version: 20 #${{ matrix.node-version }}
+        cache: 'npm'
+    - name: Install program dependencies
+      run: npm install
+   # - name: Start the app
+    #  run: npm run start &  #executed as background process
+   
+    - name: Run integration tests - Security
+      run: npm audit
+
