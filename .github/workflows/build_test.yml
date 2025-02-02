@@ -67,6 +67,6 @@ jobs:
    # - name: Start the app
     #  run: npm run start &  #executed as background process
    
-    - name: Run integration tests - Security
+    - name: Run npm security tests
       run: npm audit
 
