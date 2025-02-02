@@ -70,3 +70,15 @@ jobs:
     - name: Run npm security tests
       run: npm audit
 
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build_test
+    steps:
+      - name: Deploy to production
+        uses: johnbeynon/render-deploy-action@v0.0.8
+        with:
+          service-id: ${{ secrets.SERVICE_KEY }}
+          api-key: ${{ secrets.RENDER_API_KEY }}
+          #secret: ${{secrets.}}
+          wait-for-success: true
+
